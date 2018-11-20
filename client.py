@@ -16,12 +16,12 @@ try:
     PORT = int(sys.argv[2].split(':')[1])
     METODO = sys.argv[1]
 
+    # Contenido que vamos a enviar
+    LINE = (METODO + ' sip:' + USUARIO + ' SIP/2.0')
 
 except IndexError:
     sys.exit('Usage: python3 client.oy method receiver@IP:SIPport')
 
-# Contenido que vamos a enviar
-LINE = (METODO + ' sip:' + USUARIO + ' SIP/2.0')
 
 print (LINE)
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
@@ -34,6 +34,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     data = my_socket.recv(1024)
 
     print('Recibido -- ', data.decode('utf-8'))
+    my_socket.send(bytes("ACK sip:" + USUARIO + " SIP/2.0","Utf-8") + b"\r\n")
     print("Terminando socket...")
 
 print("Fin.")

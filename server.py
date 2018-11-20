@@ -11,23 +11,28 @@ class EchoHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class
     """
-
+    
     def handle(self):
         # Escribe dirección y puerto del cliente (de tupla client_address)
         self.wfile.write(b"Hemos recibido tu peticion\r\n")
-        while 1:
-            # Leyendo línea a línea lo que nos envía el cliente
-            line = self.rfile.read().decode('utf-8')
-            line_conten = line.split()
-            print("El cliente nos manda " + line)
-            if line_conten[0] == "INVITE":
-                self.wfile.write(b"SIP/2.0 100 Trying\r\nSIP/2.0 180 Ringing\r\n"
-                                 + b"SIP/2.0 200 OK\r\n")
-            if line_conten[0] != "INVITE":
-                self.wfile.write(b"SIP/2.0 405 Method Not Allowed")
-            # Si no hay más líneas salimos del bucle infinito
-            if not line:
-                break
+        # Leyendo línea a línea lo que nos envía el cliente
+        line = self.rfile.read().decode('utf-8')
+        line_conten = line.split()
+        print("El cliente nos manda " + line)
+        if line_conten[0] == "INVITE":
+            self.wfile.write(b"SIP/2.0 100 Trying\r\nSIP/2.0 180 Ringing\r\n"
+                             + b"SIP/2.0 200 OK\r\n")
+        elif line_conten[0] == "ACK":
+            self.wfile.write(b"ACK recibido")
+        elif line_conten[0] == "BYE":
+            self.wfile.write(b"Finalizando comunicacion")
+        if line_conten[0] != "BYE":
+            if line_conten[0] != "ACK":
+                    if line_conten[0] != "INVITE":
+                        self.wfile.write(b"SIP/2.0 405 Method Not Allowed")
+        
+        # Si no hay más líneas salimos del bucle infinito
+
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
