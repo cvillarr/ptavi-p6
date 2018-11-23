@@ -16,17 +16,17 @@ class EchoHandler(socketserver.DatagramRequestHandler):
     
     def handle(self):
         # Escribe dirección y puerto del cliente (de tupla client_address)
-        self.wfile.write(b"Hemos recibido tu peticion\r\n")
+        self.wfile.write(b"Hemos recibido tu peticion\r\n\r\n")
         # Leyendo línea a línea lo que nos envía el cliente
         line = self.rfile.read().decode('utf-8')
         line_conten = line.split()
         print("El cliente nos manda " + line)
         if len(line_conten) != 3:
-            self.wfile.write(b"SIP/2.0 400 Bad Request\r\n")
+            self.wfile.write(b"SIP/2.0 400 Bad Request\r\n\r\n")
         else:
             if line_conten[0] == "INVITE":
-                self.wfile.write(b"SIP/2.0 100 Trying\r\nSIP/2.0 180 Ringing\r\n"
-                                 + b"SIP/2.0 200 OK\r\n")
+                self.wfile.write(b"SIP/2.0 100 Trying\r\n\r\nSIP/2.0 180 Ringing\r\n\r\n"
+                                 + b"SIP/2.0 200 OK\r\n\r\n")
             elif line_conten[0] == "ACK":
                 aEjecutar = 'mp32rtp -i 127.0.0.1 -p 23032 <' + ARCHIVO
                 print("Vamos a ejecutar", aEjecutar)
