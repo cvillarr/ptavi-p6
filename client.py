@@ -17,7 +17,7 @@ try:
     METODO = sys.argv[1]
 
     # Contenido que vamos a enviar
-    LINE = (METODO + ' sip:' + USUARIO + ' SIP/2.0')
+    LINE = (METODO + ' sip:' + USUARIO + ' SIP/2.0\r\n')
 
 except IndexError:
     sys.exit('Usage: python3 client.oy method receiver@IP:SIPport')
@@ -30,9 +30,11 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     print("Enviando: " + LINE)
     my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
     data = my_socket.recv(1024)
-    print('Recibido -- ', data.decode('utf-8'))
-    my_socket.send(bytes("ACK sip:" + USUARIO + " SIP/2.0","Utf-8") + b"\r\n")
-    data = my_socket.recv(1024)
-    print('Recibido -- ', data.decode('utf-8'))
+    print(data.decode('utf-8'))
+    if METODO == "INVITE":
+        my_socket.send(bytes("ACK sip:" + USUARIO + " SIP/2.0","utf-8") 
+                            + b"\r\n")
+        data = my_socket.recv(1024)
+        print(data.decode('utf-8'))
 
     print("Fin.")
