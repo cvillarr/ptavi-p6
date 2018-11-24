@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Clase (y programa principal) para un servidor de eco en UDP simple
-"""
+"""Clase (y programa principal) para un servidor de eco en UDP simple."""
 
 import socketserver
 import sys
@@ -10,10 +8,8 @@ import os
 
 
 class EchoHandler(socketserver.DatagramRequestHandler):
-    """
-    Echo server class
-    """
-    
+    """Echo server class."""
+
     def handle(self):
         # Escribe dirección y puerto del cliente (de tupla client_address)
         # Leyendo línea a línea lo que nos envía el cliente
@@ -38,7 +34,6 @@ class EchoHandler(socketserver.DatagramRequestHandler):
                         if line_conten[0] != "INVITE":
                             self.wfile.write(b"SIP/2.0 405 Method Not Allowed")
 
-        
         # Si no hay más líneas salimos del bucle infinito
 
 
@@ -52,4 +47,3 @@ if __name__ == "__main__":
         serv.serve_forever()
     except IndexError:
         sys.exit("Usage: python3 server.py IP port audio_file")
-    

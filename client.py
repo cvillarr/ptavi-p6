@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""
-Programa cliente que abre un socket a un servidor
-"""
-
+"""Programa cliente que abre un socket a un servidor."""
 import socket
 import sys
 
@@ -32,8 +29,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     data = my_socket.recv(1024)
     print(data.decode('utf-8'))
     if METODO == "INVITE":
-        my_socket.send(bytes("ACK sip:" + USUARIO + " SIP/2.0","utf-8") 
-                            + b"\r\n")
+        my_socket.send(bytes("ACK sip:" + USUARIO + " SIP/2.0", "utf-8")
+                       + b"\r\n")
         data = my_socket.recv(1024)
         print(data.decode('utf-8'))
 
